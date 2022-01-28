@@ -1,4 +1,7 @@
 config/
 images/
+fonts/
+backgrounds/
 uploads/
 vendor/
+db-Backups/

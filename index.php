@@ -1,3 +1,11 @@
+<?php
+session_start();
+$_SESSION = array();
+
+include("simple-php-captcha.php");
+$_SESSION['captcha'] = simple_php_captcha();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,25 +46,52 @@
   .bl-dark{
       background: #132B64;
   }
+  pre {
+            border: solid 1px #bbb;
+            padding: 10px;
+            margin: 2em;
+        }
 
+  img.captchapic {
+            border: solid 1px #ccc;
+            
+  }
 </style>
     <script>
         function validateForm() {
         let x = document.forms["licenseupload'"]["company"].value;
         if (x == "") {
-            alert("Name must be filled out");
+            alert("Company must be filled out");
             return false;
         }
         }
         let y = document.forms["licenseupload'"]["phone"].value;
         if (y == "") {
-            alert("Name must be filled out");
+            alert("Phone must be filled out");
             return false;
         }
         }
         let z = document.forms["licenseupload'"]["address"].value;
         if (z == "") {
-            alert("Name must be filled out");
+            alert("Address must be filled out");
+            return false;
+        }
+
+        let a = document.forms["licenseupload'"]["fileToUploadDEA"].value;
+        if (a == "") {
+            alert("DEA must be filled out");
+            return false;
+        }
+
+        let b = document.forms["licenseupload'"]["fileToUploadCLIA"].value;
+        if (b == "") {
+            alert("CLIA must be filled out");
+            return false;
+        }
+       
+        let i = document.forms["licenseupload'"]["captchavalue"].value;
+        if (i == "") {
+            alert("CAPTCHA must be filled out");
             return false;
         }
 }
@@ -98,7 +133,7 @@
           <h3>License Upload</h3>
 
           <?php
-           if($_GET['message']){
+           if(isset($_GET['message'])){
                if($_GET['altertype']){
                 print('
                 <div class="alert alert-'.strip_tags($_GET['altertype']).'" role="alert">'.strip_tags($_GET['message']).'</div>
@@ -134,14 +169,23 @@
 
             <div class="form-group">
               <label for="formGroupExampleInput">DEA License<small>&nbsp;&nbsp;&nbsp;&nbsp;4MB Max</small></label>
-              <input type="file" class="form-control" name="fileToUploadDEA" id="fileToUploadDEA">
+              <input type="file" class="form-control" name="fileToUploadDEA" id="fileToUploadDEA" required>
             </div>
 
             <div class="form-group">
               <label for="formGroupExampleInput">CLIA License
               <small>&nbsp;&nbsp;&nbsp;&nbsp;4MB Max</small>
               </label>
-              <input type="file" class="form-control" name="fileToUploadCLIA"  id="fileToUploadCLIA">
+              <input type="file" class="form-control" name="fileToUploadCLIA"  id="fileToUploadCLIA" required>
+            </div>
+
+            <div class="form-group">
+              <?php
+              print('<img src="' . $_SESSION['captcha']['image_src'] . '" alt="CAPTCHA code" class="captchapic">');
+              ?>
+            </div>
+            <div class="form-group">
+           <input type="text" class="form-control" name="captchavalue"  id="captchavalue" value="" placeholder="Enter characters" required>
             </div>
 
        <div class="form-group">

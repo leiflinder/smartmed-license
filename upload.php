@@ -1,8 +1,17 @@
+<?php SESSION_START();?>
+<?php // print($_SESSION['captcha']['code']);?>
+<?php  
+if(isset($_SESSION['captcha']['code'])){
+          if(isset($_POST['captcha']) && $_POST['captcha']==$_SESSION['captcha']['code']){
+            // success continue with application
+          }else{
+            header('Location: index.php?message=Wrong characters, please try again&altertype=danger');
+          }
+    }else{
+      header('Location: index.php?message=There is no CAPTCHA variable. Please email documents&altertype=danger');
+    }
+?>
 <?php
-// $servername = "localhost";
-// $username = "smart";
-// $password = "SwxzLkzgH9YDmN5a";
-// $dbname = "smartmedsolutions";
 include('./config/conn.php');
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -53,7 +62,9 @@ $conn->close();
 // print('<h2>'.$_FILES["fileToUploadDEA"]["name"].'</h2>');
 // print('<h2>'.$_FILES["fileToUploadDEA"]["name"].'</h2>');
 
-$_FILES["fileToUploadDEA"]["name"] = $last_id.'-'.$_FILES["fileToUploadDEA"]["name"];
+// $_FILES["fileToUploadDEA"]["name"] = $last_id.'-'.$_FILES["fileToUploadDEA"]["name"];
+
+$_FILES["fileToUploadDEA"]["name"] = $company.'-DEA-'.$_FILES["fileToUploadDEA"]["name"];
 
 // print('<h2>'.$_FILES["fileToUploadDEA"]["name"].'</h2>');
 
@@ -88,8 +99,8 @@ if ($_FILES["fileToUploadDEA"]["size"] > 500000) {
 
 // Allow certain file formats
 if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-&& $imageFileType != "gif" ) {
-  // echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+&& $imageFileType != "gif" && $imageFileType != "pdf" ) {
+  // echo "Sorry, only JPG, JPEG, PNG, PDF & GIF files are allowed.";
   $uploadOk = 0;
 }
 
@@ -112,7 +123,10 @@ if ($uploadOk == 0) {
 // ==============================================================
 
 // print('<h2>'.$_FILES["fileToUploadCLIA"]["name"].'</h2>');
-$_FILES["fileToUploadCLIA"]["name"] = $last_id.'-'.$_FILES["fileToUploadCLIA"]["name"];
+// $_FILES["fileToUploadCLIA"]["name"] = $last_id.'-'.$_FILES["fileToUploadCLIA"]["name"];
+
+$_FILES["fileToUploadCLIA"]["name"] = $company.'-CLIA-'.$_FILES["fileToUploadCLIA"]["name"];
+
 // print('<h2>'.$_FILES["fileToUploadCLIA"]["name"].'</h2>');
 
 $target_dir = "uploads/";
@@ -146,8 +160,8 @@ if ($_FILES["fileToUploadCLIA"]["size"] > 500000) {
 
 // Allow certain file formats
 if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-&& $imageFileType != "gif" ) {
-  // echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+&& $imageFileType != "gif" && $imageFileType != "pdf" ) {
+  // echo "Sorry, only JPG, JPEG, PNG PDF & GIF files are allowed.";
   $uploadOk = 0;
 }
 

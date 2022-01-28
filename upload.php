@@ -1,16 +1,25 @@
-<?php SESSION_START();?>
-<?php // print($_SESSION['captcha']['code']);?>
+<?php SESSION_START(); ?>
 <?php  
-if(isset($_SESSION['captcha']['code'])){
-          if(isset($_POST['captcha']) && $_POST['captcha']==$_SESSION['captcha']['code']){
-            // success continue with application
-          }else{
-            header('Location: index.php?message=Wrong characters, please try again&altertype=danger');
-          }
-    }else{
-      header('Location: index.php?message=There is no CAPTCHA variable. Please email documents&altertype=danger');
-    }
+
+           if(isset($_POST['captchavalue'])){
+            if($_POST['captchavalue']==$_SESSION['captcha']['code']){
+              session_destroy();
+              // continue script
+            }else{
+              session_destroy();
+              unset($_POST);
+              header('Location: index.php?message=Characters Do Not Match&altertype=danger');
+              exit();
+            }
+           }else{
+            session_destroy();
+            unset($_POST);
+            header('Location: index.php?message=CAPTCHA not entered&altertype=danger');
+            exit();
+           }
+
 ?>
+
 <?php
 include('./config/conn.php');
 // Create connection
@@ -20,7 +29,7 @@ if ($conn->connect_error) {
   // die("Connection failed: " . $conn->connect_error);
   // $_GET['message']
   // $_GET['altertype']
-  header('Location: index.php?message=There was a problem. Please email documents&altertype=danger');
+  header('Location: index.php?message=Cannot connect to database&altertype=danger');
 }
 ?>
 
@@ -54,7 +63,7 @@ if ($conn->query($sql) === TRUE) {
   // echo "New record created successfully. Last inserted ID is: " . $last_id;
 } else {
   // echo "Error: " . $sql . "<br>" . $conn->error;
-  header('Location: index.php?message=There was a problem. Please email documents&altertype=danger');
+  header('Location: index.php?message=Problem uploading to database&altertype=danger');
 }
 
 $conn->close();
@@ -181,6 +190,6 @@ if ($uploadOk == 0) {
 if($uploadOk==1){
  header('Location: index.php?message=Upload Successful&altertype=success');
 }else{
- header('Location: index.php?message=There was a problem. Please email documents&altertype=danger');
+ header('Location: index.php?message=There was a problem. Documents not uploaded&altertype=danger');
  }
 ?>

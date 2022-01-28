@@ -1,7 +1,6 @@
 <?php
 session_start();
 $_SESSION = array();
-
 include("simple-php-captcha.php");
 $_SESSION['captcha'] = simple_php_captcha();
 ?>
@@ -143,12 +142,10 @@ $_SESSION['captcha'] = simple_php_captcha();
           ?>
 
           <form action="upload.php" method="post" name='licenseupload' enctype="multipart/form-data">
-
           <div class="form-group">
           <label for="formGroupExampleInput">Company</label>
           <input type="text" class="form-control" type="text" name="company" id="company" required>
             </div>
-
             <!-- <div class="form-group">
               <label for="formGroupExampleInput">Company</label>
               <input type="text" class="form-control" type="text" name="company" id="company" required>
